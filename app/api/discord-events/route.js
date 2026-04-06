@@ -1,23 +1,11 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 
-/**
- * GET /api/discord-events
- *
- * Obtiene los Scheduled Events reales del servidor de Discord
- * usando el Bot Token de la aplicación.
- *
- * Requiere:
- *   - DISCORD_BOT_TOKEN en .env.local
- *   - DISCORD_GUILD_ID en .env.local
- *   - El bot debe estar añadido al servidor con el scope "bot"
- *     y el permiso "Manage Events" (o al menos "View Events")
- */
-
 /* ── Caché en memoria (evita spam a Discord) ── */
 let _cache = null;
 let _cacheTime = 0;
-const CACHE_TTL = 2 * 60 * 1000; // 2 minutos
+let _rateLimitedUntil = 0;
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutos
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -29,34 +17,54 @@ export async function GET() {
   if (!botToken || !guildId) {
     return Response.json({
       events: [],
-      error: "DISCORD_BOT_TOKEN o DISCORD_GUILD_ID no configurados en .env.local",
+      error: "DISCORD_BOT_TOKEN o DISCORD_GUILD_ID no configurados",
       configured: false,
     });
   }
 
-  // Retornar caché si es reciente
   const now = Date.now();
+
+  // Retornar caché si es reciente
   if (_cache && now - _cacheTime < CACHE_TTL) {
     return Response.json({ events: _cache, configured: true });
   }
 
+  // Si estamos rate limited, devolver caché vieja o vacío
+  if (now < _rateLimitedUntil) {
+    return Response.json({
+      events: _cache || [],
+      configured: true,
+    });
+  }
+
   try {
-    // Discord API: GET /guilds/{guild.id}/scheduled-events
     const res = await fetch(
       `https://discord.com/api/v10/guilds/${guildId}/scheduled-events?with_user_count=true`,
       {
         headers: {
           Authorization: `Bot ${botToken}`,
-          "Content-Type": "application/json",
         },
+        cache: "no-store",
       }
     );
+
+    // Rate limited — respetar retry_after
+    if (res.status === 429) {
+      const rateLimitData = await res.json();
+      const retryAfter = (rateLimitData.retry_after || 10) * 1000;
+      _rateLimitedUntil = now + retryAfter;
+      console.warn(`Discord rate limited, retry after ${retryAfter}ms`);
+      return Response.json({
+        events: _cache || [],
+        configured: true,
+      });
+    }
 
     if (!res.ok) {
       const errText = await res.text();
       console.error(`Discord Events API error: ${res.status} — ${errText}`);
       return Response.json({
-        events: [],
+        events: _cache || [],
         error: `Discord API ${res.status}`,
         configured: true,
       });
@@ -64,15 +72,14 @@ export async function GET() {
 
     const rawEvents = await res.json();
 
-    // Mapear a formato simplificado
     const events = rawEvents.map((ev) => ({
       id:          ev.id,
       name:        ev.name,
       description: ev.description || "",
       startTime:   ev.scheduled_start_time,
       endTime:     ev.scheduled_end_time,
-      status:      ev.status, // 1=SCHEDULED, 2=ACTIVE, 3=COMPLETED, 4=CANCELED
-      entityType:  ev.entity_type, // 1=STAGE, 2=VOICE, 3=EXTERNAL
+      status:      ev.status,
+      entityType:  ev.entity_type,
       location:    ev.entity_metadata?.location || "",
       channelId:   ev.channel_id,
       userCount:   ev.user_count ?? 0,
@@ -82,10 +89,8 @@ export async function GET() {
         : null,
     }));
 
-    // Filtrar solo activos y programados (no completados/cancelados)
+    // Filtrar solo activos y programados
     const activeEvents = events.filter((e) => e.status === 1 || e.status === 2);
-
-    // Ordenar por fecha de inicio
     activeEvents.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
 
     _cache = activeEvents;
@@ -95,7 +100,7 @@ export async function GET() {
   } catch (err) {
     console.error("Error fetching Discord events:", err);
     return Response.json({
-      events: [],
+      events: _cache || [],
       error: err.message,
       configured: true,
     });
