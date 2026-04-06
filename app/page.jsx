@@ -363,8 +363,7 @@ function CommsPanel() {
 }
 
 /* ── Private Area ── */
-function PrivateArea({ member, onLogout }) {
-  const [activeTab, setActiveTab] = useState("inicio");
+function PrivateArea({ member, onLogout, activeTab, setActiveTab }) {
   const rankData = RANKS.find((r) => r.name === member.role) ?? RANKS[RANKS.length - 1];
 
   const TABS = [
@@ -578,22 +577,23 @@ function ProfilePanel({ member, rankData }) {
 }
 
 /* ── Mobile hamburger menu ── */
-function MobileMenu({ member }) {
+function MobileMenu({ member, activeTab, onTabChange }) {
   const [open, setOpen] = useState(false);
-  const links = member
-    ? [
-        { label: "Inicio",        href: "#zona-privada" },
-        { label: "Eventos",       href: "#zona-privada" },
-        { label: "Transmisiones", href: "#zona-privada" },
-        { label: "Inventario",    href: "#zona-privada" },
-        { label: "ORG",           href: "#zona-privada" },
-        { label: "Mi Perfil",     href: "#zona-privada" },
-      ]
-    : [
-        { label: "Historia",  href: "#historia" },
-        { label: "Valores",   href: "#valores"  },
-        { label: "El Código", href: "#codigo"   },
-      ];
+
+  const privateLinks = [
+    { label: "Inicio",        tab: "inicio"        },
+    { label: "Eventos",       tab: "eventos"       },
+    { label: "Transmisiones", tab: "transmisiones" },
+    { label: "Inventario",    tab: "inventario"    },
+    { label: "ORG",           tab: "org"           },
+    { label: "Mi Perfil",     tab: "perfil"        },
+  ];
+  const publicLinks = [
+    { label: "Historia",  href: "#historia" },
+    { label: "Valores",   href: "#valores"  },
+    { label: "El Código", href: "#codigo"   },
+  ];
+
   return (
     <div className="md:hidden relative">
       <button
@@ -610,16 +610,33 @@ function MobileMenu({ member }) {
       </button>
       {open && (
         <div className="absolute top-8 left-0 bg-outlaw-bg border border-outlaw-border/60 min-w-[160px] py-1 z-50">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              className="block px-4 py-2 font-mono text-xs text-gray-500 hover:text-outlaw-orange hover:bg-outlaw-panel/50 tracking-widest uppercase transition-colors"
-            >
-              {l.label}
-            </a>
-          ))}
+          {member
+            ? privateLinks.map((l) => (
+                <button
+                  key={l.tab}
+                  onClick={() => {
+                    onTabChange(l.tab);
+                    setOpen(false);
+                    document.getElementById("zona-privada")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className={`block w-full text-left px-4 py-2 font-mono text-xs tracking-widest uppercase transition-colors ${
+                    activeTab === l.tab ? "text-outlaw-orange" : "text-gray-500 hover:text-outlaw-orange hover:bg-outlaw-panel/50"
+                  }`}
+                >
+                  {l.label}
+                </button>
+              ))
+            : publicLinks.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-2 font-mono text-xs text-gray-500 hover:text-outlaw-orange hover:bg-outlaw-panel/50 tracking-widest uppercase transition-colors"
+                >
+                  {l.label}
+                </a>
+              ))
+          }
         </div>
       )}
     </div>
@@ -633,6 +650,7 @@ function MobileMenu({ member }) {
 export default function Home() {
   const { data: session, status } = useSession();
   const [showLogin, setShowLogin] = useState(false);
+  const [activeTab, setActiveTab] = useState("inicio");
 
   /* Map NextAuth session → member shape the rest of the UI expects */
   const member = session?.user
@@ -682,27 +700,42 @@ export default function Home() {
           </a>
 
           <div className="hidden md:flex items-center gap-1">
-            {(member
+            {member
               ? [
-                  { label: "Eventos",       href: "#priv-eventos"        },
-                  { label: "Misiones",      href: "#priv-misiones"       },
-                  { label: "Transmisiones", href: "#priv-transmisiones"  },
-                  { label: "Mi Perfil",     href: "#priv-perfil"         },
-                ]
+                  { label: "Inicio",        tab: "inicio"        },
+                  { label: "Eventos",       tab: "eventos"       },
+                  { label: "Transmisiones", tab: "transmisiones" },
+                  { label: "Inventario",    tab: "inventario"    },
+                  { label: "ORG",           tab: "org"           },
+                  { label: "Mi Perfil",     tab: "perfil"        },
+                ].map((link) => (
+                  <button
+                    key={link.tab}
+                    onClick={() => {
+                      setActiveTab(link.tab);
+                      document.getElementById("zona-privada")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className={`nav-link font-mono text-xs px-3 py-1.5 tracking-widest uppercase transition-colors relative ${
+                      activeTab === link.tab ? "text-outlaw-orange" : "text-gray-500 hover:text-outlaw-orange"
+                    }`}
+                  >
+                    {link.label}
+                  </button>
+                ))
               : [
                   { label: "Historia",  href: "#historia" },
                   { label: "Valores",   href: "#valores"  },
                   { label: "El Código", href: "#codigo"   },
-                ]
-            ).map((link) => (
-              <a key={link.href} href={link.href}
-                className="nav-link font-mono text-xs text-gray-500 hover:text-outlaw-orange px-3 py-1.5 tracking-widest uppercase transition-colors relative">
-                {link.label}
-              </a>
-            ))}
+                ].map((link) => (
+                  <a key={link.href} href={link.href}
+                    className="nav-link font-mono text-xs text-gray-500 hover:text-outlaw-orange px-3 py-1.5 tracking-widest uppercase transition-colors relative">
+                    {link.label}
+                  </a>
+                ))
+            }
           </div>
 
-          <MobileMenu member={member} />
+          <MobileMenu member={member} activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
 
         {status === "loading" ? (
@@ -741,7 +774,7 @@ export default function Home() {
 
         {/* ── PRIVATE AREA (when logged in) ──────── */}
         {member && (
-          <PrivateArea member={member} onLogout={() => signOut({ callbackUrl: "/" })} />
+          <PrivateArea member={member} onLogout={() => signOut({ callbackUrl: "/" })} activeTab={activeTab} setActiveTab={setActiveTab} />
         )}
 
         {/* ── PUBLIC SECTIONS (only when logged out) ── */}
