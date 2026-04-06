@@ -16,37 +16,44 @@ export async function GET() {
   }
 
   try {
-    const res = await fetch(
+    // Probar ambos endpoints
+    const urls = [
       `https://discord.com/api/v10/guilds/${guildId}/scheduled-events?with_user_count=true`,
-      {
+      `https://discord.com/api/v10/guilds/${guildId}/scheduled-events?with_user_count=true&status=1`,
+    ];
+
+    const results = [];
+
+    for (const url of urls) {
+      const res = await fetch(url, {
         headers: {
           Authorization: `Bot ${botToken}`,
-          "Content-Type": "application/json",
         },
-      }
-    );
+        cache: "no-store",
+      });
 
-    const text = await res.text();
-
-    if (!res.ok) {
-      return Response.json({
-        error: `Discord API ${res.status}`,
-        body: text,
-        guildId,
+      const text = await res.text();
+      results.push({
+        url: url.replace(guildId, "GUILD"),
+        status: res.status,
+        body: res.ok ? JSON.parse(text) : text,
       });
     }
 
-    const events = JSON.parse(text);
+    // También probar permisos del bot
+    const botRes = await fetch(
+      `https://discord.com/api/v10/guilds/${guildId}`,
+      {
+        headers: { Authorization: `Bot ${botToken}` },
+      }
+    );
+
     return Response.json({
       ok: true,
-      totalEvents: events.length,
-      events: events.map((e) => ({
-        id: e.id,
-        name: e.name,
-        status: e.status,
-        entityType: e.entity_type,
-        startTime: e.scheduled_start_time,
-      })),
+      guildId,
+      botCanAccessGuild: botRes.ok,
+      botGuildStatus: botRes.status,
+      endpoints: results,
     });
   } catch (err) {
     return Response.json({ error: err.message });
