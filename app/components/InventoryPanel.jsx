@@ -32,28 +32,16 @@ export const STATUS_MAP = Object.fromEntries(STATUSES.map((s) => [s.value, s]));
 export const TYPE_MAP   = Object.fromEntries(ITEM_TYPES.map((t) => [t.value, t]));
 
 const PAGE_SIZE  = 12;
-const QUALITIES = [
-  { value: "",          label: "— sin especificar —" },
-  { value: "standard",  label: "Standard" },
-  { value: "modified",  label: "Modificado" },
-  { value: "prototype", label: "Prototipo" },
-  { value: "military",  label: "Militar" },
-  { value: "stealth",   label: "Stealth" },
-  { value: "civilian",  label: "Civil" },
-  { value: "industrial",label: "Industrial" },
-  { value: "competition",label: "Competición" },
-];
-
 const EMPTY_FORM = {
   type: "ship", name: "", manufacturer: "", category: "",
-  quantity: 1, quality: "", assignedTo: "", notes: "", imageUrl: "",
+  quantity: 1, quality: 0, assignedTo: "", notes: "", imageUrl: "",
 };
 
 /* ── CSV export ─────────────────────────────────────── */
 export function exportCSV(items, filename = "inventario.csv") {
   const headers = ["ID", "Nombre", "Tipo", "Fabricante", "Categoría", "Calidad", "Cantidad", "Asignado a", "Propietario", "Notas"];
   const rows = items.map((i) =>
-    [i.id, i.name, i.type, i.manufacturer, i.category, i.quality || "", i.quantity ?? 1, i.assignedTo, i.userName, i.notes]
+    [i.id, i.name, i.type, i.manufacturer, i.category, i.quality ?? 0, i.quantity ?? 1, i.assignedTo, i.userName, i.notes]
       .map((v) => `"${String(v ?? "").replace(/"/g, '""')}"`)
   );
   const csv  = [headers, ...rows].map((r) => r.join(",")).join("\n");
@@ -319,7 +307,7 @@ export default function InventoryPanel({ userName }) {
     setEditItem(item);
     setForm({
       type: item.type, name: item.name, manufacturer: item.manufacturer,
-      category: item.category, quantity: item.quantity ?? 1, quality: item.quality || "",
+      category: item.category, quantity: item.quantity ?? 1, quality: item.quality ?? 0,
       assignedTo: item.assignedTo, notes: item.notes, imageUrl: item.imageUrl || "",
     });
     setModal("edit");
@@ -499,10 +487,10 @@ export default function InventoryPanel({ userName }) {
                   className="login-input w-full" />
               </div>
               <div>
-                <label className="inv-label">Calidad</label>
-                <select value={form.quality} onChange={setF("quality")} className="login-input w-full">
-                  {QUALITIES.map((q) => <option key={q.value} value={q.value}>{q.label}</option>)}
-                </select>
+                <label className="inv-label">Calidad (0-1000)</label>
+                <input type="number" min="0" max="1000" value={form.quality}
+                  onChange={(e) => setForm((f) => ({ ...f, quality: Math.min(1000, Math.max(0, parseInt(e.target.value) || 0)) }))}
+                  className="login-input w-full" />
               </div>
 
               <div className="col-span-2">
