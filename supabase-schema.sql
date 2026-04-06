@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS inventory (
   category    TEXT DEFAULT '',
   image_url   TEXT,
   quantity    INT NOT NULL DEFAULT 1,
+  quality     TEXT DEFAULT '',
   status      TEXT DEFAULT 'available',
   assigned_to TEXT DEFAULT '',
   notes       TEXT DEFAULT '',

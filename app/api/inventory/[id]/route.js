@@ -16,6 +16,7 @@ export async function PUT(request, { params }) {
     category:     body.category,
     imageUrl:     body.imageUrl,
     quantity:     body.quantity,
+    quality:      body.quality,
     status:       body.status,
     assignedTo:   body.assignedTo,
     notes:        body.notes,
