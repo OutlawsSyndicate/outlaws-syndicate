@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import InventoryPanel   from "./components/InventoryPanel";
 import OrgInventoryPanel from "./components/OrgInventoryPanel";
+import ObjectivesPanel   from "./components/ObjectivesPanel";
 
 /* ──────────────────────────────────────────────────
    DATA
@@ -372,6 +373,7 @@ function PrivateArea({ member, onLogout, activeTab, setActiveTab }) {
     { id: "transmisiones", label: "Transmisiones"  },
     { id: "inventario",    label: "Inventario"     },
     { id: "org",           label: "ORG"            },
+    { id: "objetivos",    label: "Objetivos"      },
     { id: "perfil",        label: "Mi Perfil"      },
   ];
 
@@ -431,6 +433,11 @@ function PrivateArea({ member, onLogout, activeTab, setActiveTab }) {
         {activeTab === "org"           && (
           <div className="hud-panel clip-panel bg-outlaw-panel/30 border border-outlaw-border p-5 sm:p-7 lg:p-9">
             <OrgInventoryPanel />
+          </div>
+        )}
+        {activeTab === "objetivos"     && (
+          <div className="hud-panel clip-panel bg-outlaw-panel/30 border border-outlaw-border p-5 sm:p-7 lg:p-9">
+            <ObjectivesPanel />
           </div>
         )}
         {activeTab === "perfil"        && <ProfilePanel member={member} rankData={rankData} />}
