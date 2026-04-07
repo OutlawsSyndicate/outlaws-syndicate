@@ -67,7 +67,6 @@ export default function OrgInventoryPanel() {
 
   /* ── Stats ── */
   const uniqueItems = aggregated.length;
-  const totalUnits  = aggregated.reduce((sum, a) => sum + a.totalQty, 0);
   const totalShips  = aggregated.filter((a) => a.type === "ship").length;
 
   return (
@@ -77,7 +76,7 @@ export default function OrgInventoryPanel() {
       <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
         <p className="text-outlaw-orange text-xs tracking-[0.3em] uppercase font-display flex items-center gap-2">
           <span>//</span> INVENTARIO DE LA ORG
-          <span className="text-gray-700 font-mono normal-case tracking-normal">({uniqueItems} materiales · {totalUnits} unidades · {users.length} pilotos)</span>
+          <span className="text-gray-700 font-mono normal-case tracking-normal">({uniqueItems} materiales · {users.length} pilotos)</span>
         </p>
         <button onClick={() => exportCSV(items, "org-inventario.csv")}
           className="text-xs font-mono px-3 py-1.5 border border-outlaw-border text-gray-400 hover:text-outlaw-orange hover:border-outlaw-orange/40 transition-colors">
@@ -86,10 +85,9 @@ export default function OrgInventoryPanel() {
       </div>
 
       {/* ── Stats ── */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
+      <div className="grid grid-cols-2 gap-3 mb-5">
         {[
           { label: "Materiales",   value: uniqueItems, color: "#f26419" },
-          { label: "Unidades",     value: totalUnits,  color: "#4ade80" },
           { label: "Naves",        value: totalShips,  color: "#60a5fa" },
         ].map((s) => (
           <div key={s.label} className="hud-panel clip-panel bg-outlaw-panel/40 border border-outlaw-border p-3 text-center">
