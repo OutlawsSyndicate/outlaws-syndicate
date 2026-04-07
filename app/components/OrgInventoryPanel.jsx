@@ -86,10 +86,9 @@ export default function OrgInventoryPanel() {
       </div>
 
       {/* ── Stats ── */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
+      <div className="grid grid-cols-2 gap-3 mb-5">
         {[
           { label: "Materiales",   value: uniqueItems, color: "#f26419" },
-          { label: "Unidades",     value: totalUnits,  color: "#4ade80" },
           { label: "Naves",        value: totalShips,  color: "#60a5fa" },
         ].map((s) => (
           <div key={s.label} className="hud-panel clip-panel bg-outlaw-panel/40 border border-outlaw-border p-3 text-center">
