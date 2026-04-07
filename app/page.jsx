@@ -763,12 +763,22 @@ export default function Home() {
             </button>
           </div>
         ) : (
-          <button
-            onClick={() => setShowLogin(true)}
-            className="btn-charge font-display font-bold text-xs tracking-[0.2em] uppercase px-5 py-2 border border-outlaw-orange text-outlaw-orange hover:bg-outlaw-orange hover:text-outlaw-bg transition-all duration-300"
-          >
-            ACCESO MIEMBROS
-          </button>
+          <div className="flex items-center gap-2">
+            <a
+              href="https://discord.gg/GNN6j7WZNg"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-display font-bold text-xs tracking-[0.2em] uppercase px-5 py-2 border border-gray-600 text-gray-400 hover:border-outlaw-orange hover:text-outlaw-orange transition-all duration-300"
+            >
+              UNIRSE
+            </a>
+            <button
+              onClick={() => setShowLogin(true)}
+              className="btn-charge font-display font-bold text-xs tracking-[0.2em] uppercase px-5 py-2 border border-outlaw-orange text-outlaw-orange hover:bg-outlaw-orange hover:text-outlaw-bg transition-all duration-300"
+            >
+              ACCESO MIEMBROS
+            </button>
+          </div>
         )}
       </nav>
 
