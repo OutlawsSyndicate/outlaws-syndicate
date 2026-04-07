@@ -25,10 +25,11 @@ export async function POST(request) {
 
   const incomingName = body.name.trim();
   const incomingType = body.type || "ship";
+  const incomingQuality = parseInt(body.quality) || 0;
   const addQty = Math.max(1, parseInt(body.quantity) || 1);
 
-  // Buscar item existente del mismo usuario con mismo nombre y tipo
-  const existing = await findExistingItem(session.user.id, incomingName, incomingType);
+  // Buscar item existente del mismo usuario con mismo nombre, tipo Y calidad
+  const existing = await findExistingItem(session.user.id, incomingName, incomingType, incomingQuality);
 
   if (existing) {
     // Unificar: sumar unidades al item existente

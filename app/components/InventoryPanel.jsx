@@ -191,12 +191,19 @@ function InventoryCard({ item, onEdit, onDelete, deleteConfirm, setDeleteConfirm
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-[#0d0d0d]/40 to-transparent" />
 
-        {/* Quantity badge */}
-        {qty > 1 && (
-          <div className="absolute top-2.5 left-2.5 bg-outlaw-orange text-[#0d0d0d] font-mono text-[10px] font-bold px-2 py-0.5 tracking-wider">
-            x{qty}
-          </div>
-        )}
+        {/* Badges (quantity + quality) */}
+        <div className="absolute top-2.5 left-2.5 flex gap-1.5">
+          {qty > 1 && (
+            <div className="bg-outlaw-orange text-[#0d0d0d] font-mono text-[10px] font-bold px-2 py-0.5 tracking-wider">
+              x{qty}
+            </div>
+          )}
+          {(item.quality ?? 0) > 0 && (
+            <div className="bg-emerald-600/90 text-white font-mono text-[10px] font-bold px-2 py-0.5 tracking-wider">
+              Q:{item.quality}
+            </div>
+          )}
+        </div>
 
         {/* Action buttons */}
         <div className="absolute top-2.5 right-2.5 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">

@@ -113,13 +113,15 @@ export default function OrgInventoryPanel() {
         </div>
       ) : (
         <div className="overflow-x-auto border border-outlaw-border/30">
-          <table className="w-full text-xs font-mono border-collapse min-w-[560px]">
+          <table className="w-full text-xs font-mono border-collapse min-w-[680px]">
             <thead>
               <tr className="bg-outlaw-panel/60 border-b border-outlaw-border/50">
                 <th className="text-outlaw-orange/60 tracking-widest text-left py-2.5 px-3 font-normal">#</th>
                 <th className="text-outlaw-orange/60 tracking-widest text-left py-2.5 px-3 font-normal">NOMBRE</th>
                 <th className="text-outlaw-orange/60 tracking-widest text-left py-2.5 px-3 font-normal hidden sm:table-cell">TIPO</th>
                 <th className="text-outlaw-orange/60 tracking-widest text-left py-2.5 px-3 font-normal hidden md:table-cell">CATEGORÍA</th>
+                <th className="text-outlaw-orange/60 tracking-widest text-center py-2.5 px-3 font-normal">CANT</th>
+                <th className="text-outlaw-orange/60 tracking-widest text-center py-2.5 px-3 font-normal">CALIDAD</th>
                 <th className="text-outlaw-orange/60 tracking-widest text-left py-2.5 px-3 font-normal">ESTADO</th>
                 <th className="text-outlaw-orange/60 tracking-widest text-left py-2.5 px-3 font-normal">PILOTO</th>
                 <th className="text-outlaw-orange/60 tracking-widest text-left py-2.5 px-3 font-normal hidden lg:table-cell">ADQUIRIDO</th>
@@ -139,6 +141,20 @@ export default function OrgInventoryPanel() {
                     </td>
                     <td className="py-3 px-3 hidden sm:table-cell text-gray-500">{ti.icon} {ti.label}</td>
                     <td className="py-3 px-3 hidden md:table-cell text-gray-600">{item.category || "—"}</td>
+                    <td className="py-3 px-3 text-center">
+                      {(item.quantity ?? 1) > 1 ? (
+                        <span className="bg-outlaw-orange/20 text-outlaw-orange px-1.5 py-0.5 text-[10px] font-bold tracking-wider">x{item.quantity}</span>
+                      ) : (
+                        <span className="text-gray-600">1</span>
+                      )}
+                    </td>
+                    <td className="py-3 px-3 text-center">
+                      {(item.quality ?? 0) > 0 ? (
+                        <span className="bg-emerald-600/15 text-emerald-400 px-1.5 py-0.5 text-[10px] font-bold tracking-wider">{item.quality}</span>
+                      ) : (
+                        <span className="text-gray-700">0</span>
+                      )}
+                    </td>
                     <td className="py-3 px-3">
                       <span className="px-2 py-0.5 border text-[10px] tracking-wider"
                         style={{ color: si.color, borderColor: `${si.color}40`, background: `${si.color}12` }}>
