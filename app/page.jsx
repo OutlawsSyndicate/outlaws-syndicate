@@ -930,7 +930,9 @@ export default function Home() {
               aqu&iacute;, quiz&aacute; ya eres uno de los nuestros.
             </p>
             <a
-              href="#"
+              href="https://discord.gg/GNN6j7WZNg"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-charge inline-block font-display font-bold text-sm tracking-[0.2em] uppercase px-10 py-4 border-2 border-outlaw-orange text-outlaw-orange hover:bg-outlaw-orange hover:text-outlaw-bg transition-all duration-300 clip-panel animate-glow-pulse"
             >
               UNIRSE AL SINDICATO
