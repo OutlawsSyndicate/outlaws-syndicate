@@ -51,7 +51,7 @@ export async function POST(request) {
     category:     body.category || "",
     imageUrl:     body.imageUrl || null,
     quantity:     addQty,
-    quality:      body.quality || "",
+    quality:      parseInt(body.quality) || 0,
     status:       body.status || "available",
     assignedTo:   body.assignedTo || session.user.callsign || session.user.name || "",
     notes:        body.notes || "",
