@@ -6,7 +6,7 @@ import { TYPE_MAP } from "./InventoryPanel";
 const POLARIS_BLUEPRINT = {
   name: "Polaris",
   alias: "Wikelo",
-  imageUrl: "https://media.starcitizen.tools/thumb/6/63/RSI_Polaris_flying_through_clouds_-_Frontal.jpg/800px-RSI_Polaris_flying_through_clouds_-_Frontal.jpg",
+  imageUrl: "https://api.fleetyards.net/files/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6ImU0NTE3NzNiLWRjZmMtNGEyZS1hN2QwLWExYjgwNjQwM2I4OSIsInB1ciI6ImJsb2JfaWQifX0=--ff89b0b659bbb7dbc40111e513f17a9bb69aa169/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGciLCJyZXNpemVfdG9fbGltaXQiOlsxMDAwLDEwMDBdLCJzYXZlciI6eyJxdWFsaXR5Ijo5MH19LCJwdXIiOiJ2YXJpYXRpb24ifX0=--0255f19aa51b0278809e817bb9bb7491a7e8f422/Star_Citizen_Polaris_Banner_4k-a3d0875b-8fc5-4113-a7e1-1e34951a7955-701fae60-ae68-4e2c-b7cb-e986d56309ab.jpg/",
   materials: [
     { name: "Wikelo Favors",                         required: 50  },
     { name: "Polaris Bits",                           required: 15  },
