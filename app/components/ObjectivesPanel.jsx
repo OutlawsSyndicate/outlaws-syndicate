@@ -34,7 +34,39 @@ const POLARIS_BLUEPRINT = {
   ],
 };
 
-const OBJECTIVES = [POLARIS_BLUEPRINT];
+/* ── Idris Blueprint ───────────────────────────────── */
+const IDRIS_BLUEPRINT = {
+  name: "Idris",
+  alias: "Wikelo",
+  imageUrl: "https://api.fleetyards.net/files/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6IjhhMDI1ZWUzLTk5YzgtNDI4OC1hZTY2LThlOTg3NmY0Mzc1NCIsInB1ciI6ImJsb2JfaWQifX0=--27d51a22041df22a0ddc8bb4228db9c03cce5e59/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGVnIiwicmVzaXplX3RvX2xpbWl0IjpbMTAwMCwxMDAwXSwic2F2ZXIiOnsicXVhbGl0eSI6OTB9fSwicHVyIjoidmFyaWF0aW9uIn19--655a6fd8f896c239be9fd09eee55030bc69d8d6d/Idris-M-Min-b78cb2bb-84ed-40e0-a268-cd0f16904716-385d6e7b-df2c-4e13-99b3-528f19cb2fbc.jpeg/",
+  materials: [
+    { name: "Wikelo Favors",                         required: 50   },
+    { name: "Polaris Bits",                           required: 50   },
+    { name: "DCHS-05 Comp-Board",                     required: 50   },
+    { name: "Carinite",                               required: 50   },
+    { name: "Irradiated Valakkar Fang (Apex)",        required: 50   },
+    { name: "MG Scrip",                               required: 50   },
+    { name: "Ace Interceptor Helmet",                 required: 50   },
+    { name: "Irradiated Valakkar Pearl (Grade AAA)",  required: 30   },
+    { name: "UEE 6th Platoon Medal (Pristine)",       required: 30   },
+    { name: "Carinite (Pure)",                        required: 30   },
+    { name: "ASD Secure Drive",                       required: 30   },
+    { name: "RCMBNT-PWL-2",                           required: 5    },
+    { name: "RCMBNT-RGL-2",                           required: 5    },
+    { name: "RCMBNT-XTL-2",                           required: 5    },
+    { name: "RCMBNT-PWL-3",                           required: 5    },
+    { name: "RCMBNT-RGL-3",                           required: 5    },
+    { name: "RCMBNT-XTL-3",                           required: 5    },
+    { name: "RCMBNT-PWL-1",                           required: 5    },
+    { name: "RCMBNT-RGL-1",                           required: 5    },
+    { name: "RCMBNT-XTL-1",                           required: 5    },
+    { name: "Quantanium",                             required: 1200 },
+    { name: "Irradiated Valakkar Pearl (Grade AA)",   required: 0    },
+    { name: "concil scrip",                           required: 0    },
+  ],
+};
+
+const OBJECTIVES = [POLARIS_BLUEPRINT, IDRIS_BLUEPRINT];
 
 /**
  * Match org inventory items to a material name (case-insensitive).
