@@ -72,9 +72,13 @@ const OBJECTIVES = [POLARIS_BLUEPRINT, IDRIS_BLUEPRINT];
  * Match org inventory items to a material name (case-insensitive).
  * Returns { total, pilots: [{ userName, quantity }] }
  */
+function normalize(s) {
+  return (s || "").toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 function matchMaterial(materialName, orgItems) {
-  const key = materialName.toLowerCase();
-  const matching = orgItems.filter((i) => i.name.toLowerCase() === key);
+  const key = normalize(materialName);
+  const matching = orgItems.filter((i) => normalize(i.name) === key);
   const total = matching.reduce((sum, i) => sum + (i.quantity ?? 1), 0);
   const pilots = matching.map((i) => ({ userName: i.userName || "—", quantity: i.quantity ?? 1 }));
   return { total, pilots };
