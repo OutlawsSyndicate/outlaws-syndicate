@@ -9,7 +9,7 @@ const POLARIS_BLUEPRINT = {
   imageUrl: "https://api.fleetyards.net/files/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6ImU0NTE3NzNiLWRjZmMtNGEyZS1hN2QwLWExYjgwNjQwM2I4OSIsInB1ciI6ImJsb2JfaWQifX0=--ff89b0b659bbb7dbc40111e513f17a9bb69aa169/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGciLCJyZXNpemVfdG9fbGltaXQiOlsxMDAwLDEwMDBdLCJzYXZlciI6eyJxdWFsaXR5Ijo5MH19LCJwdXIiOiJ2YXJpYXRpb24ifX0=--0255f19aa51b0278809e817bb9bb7491a7e8f422/Star_Citizen_Polaris_Banner_4k-a3d0875b-8fc5-4113-a7e1-1e34951a7955-701fae60-ae68-4e2c-b7cb-e986d56309ab.jpg/",
   materials: [
     { name: "Wikelo Favors",                         required: 50  },
-    { name: "Polaris Bits",                           required: 15  },
+    { name: "Polaris Bit",                            required: 15  },
     { name: "DCHS-05 Comp-Board",                     required: 10  },
     { name: "Carinite",                               required: 20  },
     { name: "Irradiated Valakkar Fang (Apex)",        required: 20  },
@@ -41,7 +41,7 @@ const IDRIS_BLUEPRINT = {
   imageUrl: "https://api.fleetyards.net/files/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6IjhhMDI1ZWUzLTk5YzgtNDI4OC1hZTY2LThlOTg3NmY0Mzc1NCIsInB1ciI6ImJsb2JfaWQifX0=--27d51a22041df22a0ddc8bb4228db9c03cce5e59/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGVnIiwicmVzaXplX3RvX2xpbWl0IjpbMTAwMCwxMDAwXSwic2F2ZXIiOnsicXVhbGl0eSI6OTB9fSwicHVyIjoidmFyaWF0aW9uIn19--655a6fd8f896c239be9fd09eee55030bc69d8d6d/Idris-M-Min-b78cb2bb-84ed-40e0-a268-cd0f16904716-385d6e7b-df2c-4e13-99b3-528f19cb2fbc.jpeg/",
   materials: [
     { name: "Wikelo Favors",                         required: 50   },
-    { name: "Polaris Bits",                           required: 50   },
+    { name: "Polaris Bit",                            required: 50   },
     { name: "DCHS-05 Comp-Board",                     required: 50   },
     { name: "Carinite",                               required: 50   },
     { name: "Irradiated Valakkar Fang (Apex)",        required: 50   },
