@@ -5,13 +5,15 @@ export const metadata = {
   title: "Outlaws Syndicate — Star Citizen",
   description:
     "Nacidos fuera del sistema. Unidos por elección. Organización de Star Citizen.",
+  verification: {
+    google: "fxf9i3OzYfVCLJBwNO6liyB1_Wmqbihh5O366XBmH4M",
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <head>
-        <meta name="google-site-verification" content="fxf9i3OzYfVCLJBwNO6liyB1_Wmqbihh5O366XBmH4M" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
