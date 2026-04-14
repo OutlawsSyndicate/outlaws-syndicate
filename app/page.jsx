@@ -169,6 +169,9 @@ function DiscordEvents() {
       })
       .catch(() => setError("Error cargando eventos"))
       .finally(() => setLoading(false));
+
+    // Silently trigger push check for new events on every page load
+    fetch("/api/cron/check-events").catch(() => {});
   }, []);
 
   return (

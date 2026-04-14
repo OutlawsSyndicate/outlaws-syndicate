@@ -2,17 +2,15 @@ import { supabase } from "../../../../lib/supabase";
 import { sendPushToAll } from "../../../../lib/push";
 
 /**
- * Cron endpoint — called by Vercel Cron every 5 minutes.
- * Checks for new Discord guild events and sends push notifications.
+ * Check for new Discord events and send push notifications.
+ * Called by:
+ *  - Vercel Cron (daily)
+ *  - Frontend (on every Events page load, for near-real-time checks)
+ *  - External cron service (optional, for more frequent checks)
+ *
+ * Safe to call frequently — uses known_events table to prevent duplicate notifications.
  */
-export async function GET(req) {
-  // Verify cron secret (Vercel sends this header for cron jobs)
-  const authHeader = req.headers.get("authorization");
-  const cronSecret = process.env.CRON_SECRET;
-
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
+export async function GET() {
 
   const botToken = process.env.DISCORD_BOT_TOKEN;
   const guildId  = process.env.DISCORD_GUILD_ID;
