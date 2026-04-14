@@ -6,7 +6,7 @@ export const metadata = {
   description:
     "Nacidos fuera del sistema. Unidos por elección. Organización de Star Citizen.",
   verification: {
-    google: "fxf9i3OzYfVCLJBwNO6liyB1_Wmqbihh5O366XBmH4M",
+    google: "r0chIXX4jFCvEPcEUw5wc2s_8UutKMrYPcosGcdYnYk",
   },
 };
 
