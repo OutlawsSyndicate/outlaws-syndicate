@@ -21,15 +21,20 @@ export default function PushToggle() {
   const [loading,     setLoading]     = useState(true);
 
   useEffect(() => {
-    const isSupported =
+    const hasPush =
       typeof window !== "undefined" &&
       "serviceWorker" in navigator &&
-      "PushManager" in window &&
-      !!VAPID_PUBLIC_KEY;
+      "PushManager" in window;
 
+    const isSupported = hasPush && !!VAPID_PUBLIC_KEY;
     setSupported(isSupported);
 
-    if (!isSupported) {
+    if (!hasPush) {
+      setLoading(false);
+      return;
+    }
+
+    if (!VAPID_PUBLIC_KEY) {
       setLoading(false);
       return;
     }
@@ -109,7 +114,19 @@ export default function PushToggle() {
     setLoading(false);
   }
 
-  if (!supported) return null;
+  // Browser doesn't support push at all
+  if (typeof window !== "undefined" && (!("serviceWorker" in navigator) || !("PushManager" in window))) {
+    return null;
+  }
+
+  // VAPID key missing — show nothing (env var not configured)
+  if (!VAPID_PUBLIC_KEY) {
+    return (
+      <span className="text-[10px] font-mono text-red-500/60" title="NEXT_PUBLIC_VAPID_PUBLIC_KEY not set">
+        [PUSH N/A]
+      </span>
+    );
+  }
 
   if (permission === "denied") {
     return (
