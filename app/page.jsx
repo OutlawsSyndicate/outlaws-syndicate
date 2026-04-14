@@ -203,9 +203,10 @@ function DiscordEvents() {
       ) : (
         <div className="space-y-3">
           {events.map((ev) => {
-            const isActive = ev.status === 2;
-            const color = isActive ? "#4ade80" : "#f26419";
-            const typeLabel = isActive ? "EN CURSO" : ev.entityType === 3 ? "EXTERNO" : ev.entityType === 1 ? "STAGE" : "VOZ";
+            const isActive    = ev.status === 2;
+            const isCompleted = ev.status === 3;
+            const color = isActive ? "#4ade80" : isCompleted ? "#6b7280" : "#f26419";
+            const typeLabel = isActive ? "EN CURSO" : isCompleted ? "COMPLETADO" : ev.entityType === 3 ? "EXTERNO" : ev.entityType === 1 ? "STAGE" : "VOZ";
             return (
               <div key={ev.id}
                 className="hud-panel clip-panel bg-outlaw-panel/40 border border-outlaw-border hover:border-outlaw-orange/40 transition-all overflow-hidden">

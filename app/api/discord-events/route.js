@@ -71,6 +71,7 @@ export async function GET() {
     }
 
     const rawEvents = await res.json();
+    console.log(`Discord events: ${rawEvents.length} total, statuses: [${rawEvents.map(e => e.status).join(",")}]`);
 
     const events = rawEvents.map((ev) => ({
       id:          ev.id,
@@ -89,14 +90,15 @@ export async function GET() {
         : null,
     }));
 
-    // Filtrar solo activos y programados
-    const activeEvents = events.filter((e) => e.status === 1 || e.status === 2);
-    activeEvents.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+    // Mostrar todos los eventos (scheduled=1, active=2, completed=3)
+    // Excluir solo cancelados (status=4)
+    const visibleEvents = events.filter((e) => e.status !== 4);
+    visibleEvents.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
 
-    _cache = activeEvents;
+    _cache = visibleEvents;
     _cacheTime = now;
 
-    return Response.json({ events: activeEvents, configured: true });
+    return Response.json({ events: visibleEvents, configured: true, total: rawEvents.length });
   } catch (err) {
     console.error("Error fetching Discord events:", err);
     return Response.json({
